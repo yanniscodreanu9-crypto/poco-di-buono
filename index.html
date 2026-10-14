@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poco di Buono - Pizzeria Artigianale a Voghera</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/playfair-display@latest/latin-700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/inter@latest/latin-600.css">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --rosso: #c0392b;
+    --rosso-scuro: #8b1e14;
+    --oro: #f4b942;
+    --crema: #fff8ee;
+    --scuro: #2b1810;
+    --verde: #5a7d3a;
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--crema);
+    color: var(--scuro);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(244,185,66,0.3), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(192,57,43,0.4), transparent 50%),
+      linear-gradient(135deg, #1a0f08 0%, #3d1f14 50%, #5a2a1a 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 10% 20%, rgba(255,255,255,0.05) 1px, transparent 1px),
+      radial-gradient(circle at 80% 60%, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+    animation: fadeUp 1s ease-out;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(244,185,66,0.15);
+    border: 1px solid rgba(244,185,66,0.4);
+    color: var(--oro);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.9em;
+    font-weight: 600;
+    margin-bottom: 25px;
+    backdrop-filter: blur(10px);
+  }
+  .badge .dot {
+    width: 8px; height: 8px;
+    background: #e74c3c;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+  }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  .hero h1 {
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    margin-bottom: 15px;
+    letter-spacing: -1px;
+    line-height: 1.1;
+  }
+  .hero h1 span { color: var(--oro); font-style: italic; }
+  .hero .tagline {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    opacity: 0.9;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .rating-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 12px 25px;
+    border-radius: 50px;
+    margin-bottom: 35px;
+    backdrop-filter: blur(10px);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .rating-box .stars { color: var(--oro); font-size: 1.2em; }
+  .rating-box .divider { opacity: 0.3; }
+
+  .cta-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn-call {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--rosso);
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    box-shadow: 0 10px 30px rgba(192,57,43,0.4);
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .btn-call:hover {
+    background: #e74c3c;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(192,57,43,0.6);
+  }
+  .btn-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: transparent;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1em;
+    border: 2px solid rgba(255,255,255,0.3);
+    transition: all 0.3s;
+  }
+  .btn-menu:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--oro);
+    color: var(--oro);
+  }
+
+  /* Floating pizza decorations */
+  .pizza-deco {
+    position: absolute;
+    font-size: 8rem;
+    opacity: 0.08;
+    animation: float 6s ease-in-out infinite;
+  }
+  .pizza-deco.p1 { top: 10%; left: 5%; }
+  .pizza-deco.p2 { bottom: 15%; right: 8%; animation-delay: -3s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+  }
+
+  /* INFO STRIP */
+  .info-strip {
+    background: var(--scuro);
+    color: white;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    text-align: center;
+  }
+  .info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .info-item .icon { font-size: 1.5em; margin-bottom: 5px; }
+  .info-item .label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--oro);
+    font-weight: 600;
+  }
+  .info-item .value { font-size: 0.95em; }
+
+  /* SECTIONS */
+  section { padding: 80px 20px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 60px; }
+  .section-header .eyebrow {
+    color: var(--rosso);
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--scuro);
+    margin-bottom: 15px;
+  }
+  .section-header p {
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+    font-size: 1.05em;
+  }
+
+  /* ABOUT */
+  .about {
+    background: white;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    padding: 80px 20px;
+  }
+  .about-visual {
+    aspect-ratio: 1;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--rosso), var(--oro));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(192,57,43,0.3);
+  }
+  .about-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent 50%);
+  }
+  .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
+  .about-text p { color: #555; margin-bottom: 15px; font-size: 1.05em; }
+  .about-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 25px;
+  }
+  .feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .feature-icon {
+    width: 40px; height: 40px;
+    background: var(--crema);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+  }
+
+  /* MENU */
+  .menu-section { background: var(--crema); }
+  .menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 10px 25px;
+    border: 2px solid var(--scuro);
+    background: transparent;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+  .tab.active, .tab:hover {
+    background: var(--scuro);
+    color: var(--oro);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+  }
+  .menu-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 25px;
+    transition: all 0.4s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rosso), var(--oro));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .menu-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    border-color: var(--oro);
+  }
+  .menu-card:hover::before { transform: scaleX(1); }
+  .menu-card .emoji {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    display: block;
+  }
+  .menu-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: var(--scuro);
+  }
+  .menu-card p {
+    color: #777;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+  }
+  .popular-tag {
+    display: inline-block;
+    background: var(--oro);
+    color: var(--scuro);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* REVIEWS */
+  .reviews-section {
+    background: var(--scuro);
+    color: white;
+    text-align: center;
+  }
+  .reviews-section h2 { color: var(--oro); }
+  .reviews-section .section-header p { color: rgba(255,255,255,0.7); }
+  .big-rating {
+    font-size: 5rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--oro);
+    margin: 20px 0;
+    line-height: 1;
+  }
+  .big-rating .stars { font-size: 1.5rem; display: block; margin-bottom: 10px; }
+  .review-stats {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-size: 2.5rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--oro);
+    font-weight: 700;
+  }
+  .stat .lbl {
+    font-size: 0.85em;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* CTA FINAL */
+  .cta-section {
+    background: linear-gradient(135deg, var(--rosso) 0%, var(--rosso-scuro) 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+  }
+  .cta-section h2 { color: white; margin-bottom: 20px; }
+  .cta-section p {
+    font-size: 1.2em;
+    margin-bottom: 30px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-section .btn-call {
+    background: white;
+    color: var(--rosso);
+    font-size: 1.3em;
+    padding: 22px 50px;
+  }
+  .cta-section .btn-call:hover {
+    background: var(--oro);
+    color: var(--scuro);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #1a0f08;
+    color: rgba(255,255,255,0.7);
+    padding: 50px 20px 30px;
+    text-align: center;
+  }
+  .footer-grid {
+    max-width: 1000px;
+    margin: 0 auto 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    text-align: left;
+  }
+  .footer-col h4 {
+    color: var(--oro);
+    margin-bottom: 15px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2em;
+  }
+  .footer-col a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+  .footer-col a:hover { color: var(--oro); }
+  .copyright {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+    font-size: 0.9em;
+    opacity: 0.6;
+  }
+
+  /* FLOATING CALL */
+  .floating-call {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: var(--rosso);
+    color: white;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(192,57,43,0.5);
+    z-index: 1000;
+    font-size: 1.8em;
+    transition: all 0.3s;
+  }
+  .floating-call::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 3px solid var(--rosso);
+    animation: ripple 2s infinite;
+  }
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.5); opacity: 0; }
+  }
+  .floating-call:hover {
+    transform: scale(1.1) rotate(10deg);
+    background: #e74c3c;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .about { grid-template-columns: 1fr; gap: 30px; }
+    .about-visual { font-size: 6rem; max-width: 300px; margin: 0 auto; }
+    .about-features { grid-template-columns: 1fr; }
+    .big-rating { font-size: 3.5rem; }
+    section { padding: 60px 20px; }
+    .floating-call { width: 55px; height: 55px; font-size: 1.4em; bottom: 20px; right: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="pizza-deco p1">🍕</div>
+  <div class="pizza-deco p2">🍺</div>
+  <div class="hero-content">
+    <div class="badge">
+      <span class="dot"></span>
+      Chiude tra poco · Aperto giovedì alle 12:00
+    </div>
+    <h1>Poco di <span>Buono</span></h1>
+    <p class="tagline">Pizze e birre artigianali nel cuore di Voghera. Un piccolo ritrovo dal tono informale, dove ogni morso è una scoperta.</p>
+    <div class="rating-box">
+      <span class="stars">★★★★★</span>
+      <span><strong>4,5</strong> · 679 Recensioni</span>
+      <span class="divider">|</span>
+      <span>💰 10-20 € a persona</span>
+    </div>
+    <div class="cta-group">
+      <a href="tel:+393703195241" class="btn-call">
+        📞 Chiamami Ora
+      </a>
+      <a href="#menu" class="btn-menu">
+        🍽️ Scopri il Menu
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-item">
+    <span class="icon">📍</span>
+    <span class="label">Indirizzo</span>
+    <span class="value">Viale della Repubblica, 79<br>27058 Voghera PV</span>
+  </div>
+  <div class="info-item">
+    <span class="icon">🕐</span>
+    <span class="label">Orari</span>
+    <span class="value">Giovedì ore 12:00</span>
+  </div>
+  <div class="info-item">
+    <span class="icon">📞</span>
+    <span class="label">Prenota</span>
+    <span class="value"><a href="tel:+393703195241" style="color:var(--oro);text-decoration:none;">370 319 5241</a></span>
+  </div>
+  <div class="info-item">
+    <span class="icon">⭐</span>
+    <span class="label">Consigliato</span>
+    <span class="value">da 10 persone</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about container">
+  <div class="about-visual">🍕</div>
+  <div class="about-text">
+    <div class="eyebrow" style="color:var(--rosso);font-weight:600;letter-spacing:3px;text-transform:uppercase;font-size:0.85em;margin-bottom:10px;">La Nostra Passione</div>
+    <h2>Autentica tradizione italiana</h2>
+    <p>In un ambiente accogliente con panche di legno e arredi essenziali, prepariamo ogni giorno pizze con ingredienti selezionati e birre artigianali uniche.</p>
+    <p>Ogni pizza racconta una storia, ogni birra è un'esperienza. Venite a trovarci e lasciatevi conquistare dal sapore delle cose fatte bene.</p>
+    <div class="about-features">
+      <div class="feature"><div class="feature-icon">🍕</div><span>Pizze Artigianali</span></div>
+      <div class="feature"><div class="feature-icon">🍺</div><span>Birre Selezionate</span></div>
+      <div class="feature"><div class="feature-icon">🌿</div><span>Ingredienti Freschi</span></div>
+      <div class="feature"><div class="feature-icon">❤️</div><span>Fatto con Amore</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow">Le Nostre Specialità</div>
+      <h2>In Evidenza nel Menu</h2>
+      <p>I piatti più amati dai nostri clienti, preparati con passione e ingredienti di prima qualità</p>
+    </div>
+
+    <div class="menu-tabs">
+      <button class="tab active" onclick="filterMenu('all', this)">Tutti</button>
+      <button class="tab" onclick="filterMenu('pizza', this)">🍕 Pizze</button>
+      <button class="tab" onclick="filterMenu('birra', this)">🍺 Birre</button>
+      <button class="tab" onclick="filterMenu('dolce', this)">🍰 Dolci</button>
+    </div>
+
+    <div class="menu-grid" id="menuGrid">
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🍕</span>
+        <h3>Pizza Regina</h3>
+        <p>Con bufala e crudo</p>
+        <span class="popular-tag">⭐ Popolare</span>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🌶️</span>
+        <h3>Salsiccia e Friarielli</h3>
+        <p>Sapore napoletano autentico</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🍟</span>
+        <h3>Würstel e Patatine</h3>
+        <p>Il classico amatissimo</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🧅</span>
+        <h3>Tonno e Cipolle</h3>
+        <p>Un abbinamento perfetto</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🧀</span>
+        <h3>Mozzarella di Bufala</h3>
+        <p>La vera bufala campana</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🌿</span>
+        <h3>Fior di Latte e Rucola</h3>
+        <p>Freschezza e delicatezza</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🥔</span>
+        <h3>Pizza Patatosa</h3>
+        <p>Patatine croccanti e saporite</p>
+      </div>
+      <div class="menu-card" data-cat="pizza">
+        <span class="emoji">🍖</span>
+        <h3>Patatine e Salsiccia</h3>
+        <p>La combinazione vincente</p>
+      </div>
+      <div class="menu-card" data-cat="birra">
+        <span class="emoji">🍺</span>
+        <h3>Birre Artigianali</h3>
+        <p>Selezione di birre locali</p>
+        <span class="popular-tag">⭐ Popolare</span>
+      </div>
+      <div class="menu-card" data-cat="birra">
+        <span class="emoji">🍻</span>
+        <h3>Birra Speciale</h3>
+        <p>Le nostre specialità alla spina</p>
+      </div>
+      <div class="menu-card" data-cat="birra">
+        <span class="emoji">🥂</span>
+        <h3>Imperial IPA</h3>
+        <p>Intensa e aromatica</p>
+      </div>
+      <div class="menu-card" data-cat="dolce">
+        <span class="emoji">🍰</span>
+        <h3>Tiramisù</h3>
+        <p>La ricetta della casa</p>
+      </div>
+      <div class="menu-card" data-cat="dolce">
+        <span class="emoji">🍮</span>
+        <h3>Panna Cotta</h3>
+        <p>Morbida e delicata</p>
+      </div>
+      <div class="menu-card" data-cat="dolce">
+        <span class="emoji">🍫</span>
+        <h3>Torta Ricotta e Cioccolato</h3>
+        <p>Un'esplosione di gusto</p>
+      </div>
+      <div class="menu-card" data-cat="dolce">
+        <span class="emoji">🧁</span>
+        <h3>Cheesecake</h3>
+        <p>Cremosa e irresistibile</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="eyebrow" style="color:var(--oro);">I Nostri Clienti</div>
+      <h2>Amato da Voghera</h2>
+    </div>
+    <div class="big-rating">
+      <span class="stars">★★★★★</span>
+      4,5
+    </div>
+    <p style="font-size:1.2em;opacity:0.9;">Basato su 679 recensioni autentiche</p>
+    <div class="review-stats">
+      <div class="stat">
+        <div class="num">679</div>
+        <div class="lbl">Recensioni</div>
+      </div>
+      <div class="stat">
+        <div class="num">10</div>
+        <div class="lbl">Segnalazioni</div>
+      </div>
+      <div class="stat">
+        <div class="num">4,5★</div>
+        <div class="lbl">Valutazione</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Hai già l'acquolina?</h2>
+    <p>Chiama ora per prenotare il tuo tavolo o per ordinare da asporto. Ti aspettiamo!</p>
+    <a href="tel:+393703195241" class="btn-call">
+      📞 370 319 5241
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Poco di Buono</h4>
+      <p style="font-size:0.9em;">Pizze e birre artigianali nel cuore di Voghera dal tono informale e accogliente.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Contatti</h4>
+      <a href="tel:+393703195241">📞 370 319 5241</a>
+      <a>📍 Viale della Repubblica, 79</a>
+      <a>27058 Voghera (PV)</a>
+    </div>
+    <div class="footer-col">
+      <h4>Orari</h4>
+      <a>Giovedì: 12:00</a>
+      <a>Chiuso altri giorni</a>
+    </div>
+  </div>
+  <div class="copyright">
+    © 2026 Poco di Buono · Tutti i diritti riservati
+  </div>
+</footer>
+
+<!-- FLOATING CALL BUTTON -->
+<a href="tel:+393703195241" class="floating-call" title="Chiama ora">📞</a>
+
+<script>
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.menu-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = 'block';
+        card.style.animation = 'fadeUp 0.4s ease-out';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
